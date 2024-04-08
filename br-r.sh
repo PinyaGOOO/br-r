@@ -11,7 +11,7 @@ echo -e "net.ipv4.ip_forward=1\nnet.ipv6.conf.all.forwarding=1" >> /etc/sysctl.c
 sysctl -p
 
 dnf install -y nftables
-echo -e 'table inet mynat {\n\tchain my_masquerade {\n\ttype nat hook postrouting priority srcnat;\n\toifname "ens18" masquerade\n\t}\n}' > /etc/nftables/isp.nft
+echo -e 'table inet my_nat {\n\tchain my_masquerade {\n\ttype nat hook postrouting priority srcnat;\n\toifname "ens18" masquerade\n\t}\n}' > /etc/nftables/br-r.nft
 echo 'include "/etc/nftables/br-r.nft"' >> /etc/sysconfig/nftables.conf
 systemctl enable --now nftables
 
