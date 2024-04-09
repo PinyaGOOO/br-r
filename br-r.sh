@@ -55,4 +55,10 @@ vtysh -c "configure terminal" \
     -c "exit" \
     -c "do write"
 
+useradd -c "Branch admin" branch_admin -U
+echo "branch_admin:P@ssw0rd" | chpasswd
+useradd -c "Network Admin" network_admin -U
+echo "network_admin:P@ssw0rd" | chpasswd
+
+mkdir /var/backup
 
