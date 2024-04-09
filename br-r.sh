@@ -36,14 +36,14 @@ systemctl enable --now frr
 vtysh -c "configure terminal" \
     -c "router ospf" \
     -c "passive-interface default" \
-    -c "network 192.16.100.0/28 area 0" \
+    -c "network 192.168.100.0/28 area 0" \
     -c "network 10.10.10.0/30 area 0" \
     -c "exit" \
     -c "interface tun1" \
     -c "no ip ospf network broadcast" \
     -c "no ip ospf passive" \
     -c "exit" \
-    -c "do write"
+    -c "do write" \
     -c "router ospf6" \
     -c "ospf6 router-id 2.2.2.2" \
     -c "exit" \
