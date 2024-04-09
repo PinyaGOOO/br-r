@@ -62,3 +62,6 @@ echo "network_admin:P@ssw0rd" | chpasswd
 
 mkdir /var/backup
 
+hostnamectl set-hostname; exec bash
+rm -rf br-r
+
