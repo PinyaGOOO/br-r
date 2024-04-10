@@ -1,4 +1,7 @@
 #!/bin/bash
+dnf install -y frr
+dnf install -y nftables
+
 nmcli con modify ens18 ipv6.method manual ipv6.addresses 2024:2::2/64
 nmcli con modify ens18 ipv6.gateway 2024:2::1
 nmcli con modify ens18 ipv4.method manual ipv4.addresses 2.2.2.2/30
@@ -12,7 +15,6 @@ nmcli con modify Проводное\ подключение\ 1 ipv4.method manua
 echo -e "net.ipv4.ip_forward=1\nnet.ipv6.conf.all.forwarding=1" >> /etc/sysctl.conf
 sysctl -p
 
-dnf install -y nftables
 echo -e 'table inet my_nat {\n\tchain my_masquerade {\n\ttype nat hook postrouting priority srcnat;\n\toifname "ens18" masquerade\n\t}\n}' > /etc/nftables/br-r.nft
 echo 'include "/etc/nftables/br-r.nft"' >> /etc/sysconfig/nftables.conf
 systemctl enable --now nftables
@@ -25,7 +27,7 @@ sed -i '11i\parent=ens18' /etc/NetworkManager/system-connections/ip-tunnel-tun1.
 sed -i '/id=ip-tunnel-tun1/d' /etc/NetworkManager/system-connections/ip-tunnel-tun1.nmconnection
 sed -i '2i\id=tun1' /etc/NetworkManager/system-connections/ip-tunnel-tun1.nmconnection
 
-dnf install -y frr
+
 sed -i '/ospfd=no/d' /etc/frr/daemons
 sed -i '18i\ospfd=yes' /etc/frr/daemons
 sed -i '/ospf6d=no/d' /etc/frr/daemons
@@ -62,6 +64,6 @@ echo "network_admin:P@ssw0rd" | chpasswd
 
 mkdir /var/backup
 
-hostnamectl set-hostname; exec bash
-rm -rf br-r
+hostnamectl set-hostname br-r; exec bash
+rm -rf br-r.sh
 
