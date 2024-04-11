@@ -63,7 +63,7 @@ echo "branch_admin:P@ssw0rd" | chpasswd
 useradd -c "Network Admin" network_admin -U
 echo "network_admin:P@ssw0rd" | chpasswd
 
-mkdir /var/backup
+mkdir /var/backup-script/
 
 hostnamectl set-hostname br-r; exec bash
 rm -rf br-r.sh
