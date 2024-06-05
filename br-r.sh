@@ -2,7 +2,6 @@
 dnf remove -y git
 dnf install -y frr
 dnf install -y nftables
-dnf install -y chrony
 
 nmcli con modify ens18 ipv4.method manual ipv4.addresses 2.2.2.2/30
 nmcli con modify ens18 ipv4.gateway 2.2.2.1
@@ -49,17 +48,6 @@ useradd -c "Branch admin" Branch_admin -U
 echo "Branch_admin:P@ssw0rd" | chpasswd
 useradd -c "Network Admin" Network_admin -U
 echo "Network_admin:P@ssw0rd" | chpasswd
-
-timedatectl set-timezone Europe/Moscow
-sed -i '3s/^/#/' /etc/chrony.conf
-sed -i '4s/^/#/' /etc/chrony.conf
-sed -i '5s/^/#/' /etc/chrony.conf
-sed -i '6s/^/#/' /etc/chrony.conf
-sed -i '7a\server 172.16.100.1 iburst prefer' /etc/chrony.conf
-
-systemctl enable --now chronyd
-systemctl restart chronyd
-chronyc sources
 
 mkdir /var/backup-script/
 
