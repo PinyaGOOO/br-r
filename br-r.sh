@@ -10,6 +10,7 @@ nmcli con modify ens18 ipv4.dns 8.8.8.8
 
 
 nmcli con modify Проводное\ подключение\ 1 ipv4.method manual ipv4.addresses 192.168.100.1/29
+nmcli con modify Проводное\ подключение\ 1 ipv4.gateway 192.168.100.10
 
 echo -e "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 sysctl -p
