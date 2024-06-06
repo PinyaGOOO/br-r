@@ -2,13 +2,14 @@
 dnf remove -y git
 dnf install -y frr
 dnf install -y nftables
+dnf install -y chrony
 
 nmcli con modify ens18 ipv4.method manual ipv4.addresses 2.2.2.2/30
 nmcli con modify ens18 ipv4.gateway 2.2.2.1
 nmcli con modify ens18 ipv4.dns 8.8.8.8
 
 
-nmcli con modify Проводное\ подключение\ 1 ipv4.method manual ipv4.addresses 192.168.100.1/28
+nmcli con modify Проводное\ подключение\ 1 ipv4.method manual ipv4.addresses 192.168.100.1/29
 
 echo -e "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 sysctl -p
@@ -35,7 +36,7 @@ systemctl enable --now frr
 vtysh -c "configure terminal" \
     -c "router ospf" \
     -c "passive-interface default" \
-    -c "network 192.168.100.0/28 area 0" \
+    -c "network 192.168.100.0/29 area 0" \
     -c "network 10.10.10.0/30 area 0" \
     -c "exit" \
     -c "interface tun1" \
@@ -48,6 +49,16 @@ useradd -c "Branch admin" Branch_admin -U
 echo "Branch_admin:P@ssw0rd" | chpasswd
 useradd -c "Network Admin" Network_admin -U
 echo "Network_admin:P@ssw0rd" | chpasswd
+
+sed -i '3s/^/#/' /etc/chrony.conf
+sed -i '4s/^/#/' /etc/chrony.conf
+sed -i '5s/^/#/' /etc/chrony.conf
+sed -i '6s/^/#/' /etc/chrony.conf
+sed -i '7a\server 172.16.100.1 iburst prefer' /etc/chrony.conf
+
+systemctl enable --now chronyd
+systemctl restart chronyd
+chronyc sources
 
 mkdir /var/backup-script/
 
